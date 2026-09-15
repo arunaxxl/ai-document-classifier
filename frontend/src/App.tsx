@@ -129,11 +129,10 @@ export default function App() {
                 className="text-lg font-bold tracking-tight"
                 style={{ color: "#f0e9d9" }}
               >
-                AI Document Classifier{" "}
-                <span style={{ color: "#ff8c2a" }}>AI</span> Classifier
+                <span style={{ color: "#ff8c2a" }}>AI</span> Document Classifier
               </h1>
               <p className="text-xs" style={{ color: "#9b96b0" }}>
-                Document Intelligence Platform — POC
+                Document Intelligence Platform
               </p>
             </div>
           </div>

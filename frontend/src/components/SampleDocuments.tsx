@@ -5,6 +5,10 @@ const SAMPLES = [
   { name: "sample_drivers_license.png", label: "Driver's License", icon: "🪪", type: "drivers_license" },
   { name: "sample_invoice.png", label: "Invoice", icon: "🧾", type: "invoice" },
   { name: "sample_utility_bill.png", label: "Utility Bill", icon: "⚡", type: "utility_bill" },
+  // --- Failure test samples ---
+  { name: "sample_unknown_garbled.png", label: "Garbled Image", icon: "🖼️", type: "unknown (test)" },
+  { name: "sample_not_a_document.png", label: "Not a Document", icon: "🎨", type: "unknown (test)" },
+  { name: "sample_random_note.png", label: "Random Note", icon: "✏️", type: "unknown (test)" },
 ];
 
 interface Props {
@@ -29,42 +33,54 @@ export function SampleDocuments({ onClassify, loading }: Props) {
       </p>
 
       <div className="grid grid-cols-2 gap-3">
-        {SAMPLES.map((sample) => (
-          <button
-            key={sample.name}
-            onClick={() => onClassify(sample.name)}
-            disabled={loading}
-            className="flex items-center gap-3 p-3.5 rounded-xl transition-all duration-200 text-left group"
-            style={{
-              background: "rgba(20, 18, 36, 0.5)",
-              border: "1px solid #3a374f",
-              opacity: loading ? 0.4 : 1,
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
-            onMouseEnter={(e) => {
-              if (!loading) {
-                e.currentTarget.style.background = "rgba(42, 38, 64, 0.8)";
-                e.currentTarget.style.borderColor = "#4a4768";
-              }
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "rgba(20, 18, 36, 0.5)";
-              e.currentTarget.style.borderColor = "#3a374f";
-            }}
-          >
-            <span className="text-2xl group-hover:scale-110 transition-transform">
-              {sample.icon}
-            </span>
-            <div>
-              <p className="text-sm font-medium" style={{ color: "#f0e9d9" }}>
-                {sample.label}
-              </p>
-              <p className="text-xs" style={{ color: "#9b96b0" }}>
-                Expected: {sample.type}
-              </p>
-            </div>
-          </button>
-        ))}
+        {SAMPLES.map((sample) => {
+          const isTest = sample.type.includes("test");
+          return (
+            <button
+              key={sample.name}
+              onClick={() => onClassify(sample.name)}
+              disabled={loading}
+              className="flex items-center gap-3 p-3.5 rounded-xl transition-all duration-200 text-left group"
+              style={{
+                background: isTest
+                  ? "rgba(239, 68, 68, 0.05)"
+                  : "rgba(20, 18, 36, 0.5)",
+                border: isTest
+                  ? "1px solid rgba(239, 68, 68, 0.2)"
+                  : "1px solid #3a374f",
+                opacity: loading ? 0.4 : 1,
+                cursor: loading ? "not-allowed" : "pointer",
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.background = isTest
+                    ? "rgba(239, 68, 68, 0.1)"
+                    : "rgba(42, 38, 64, 0.8)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = isTest
+                  ? "rgba(239, 68, 68, 0.05)"
+                  : "rgba(20, 18, 36, 0.5)";
+              }}
+            >
+              <span className="text-2xl group-hover:scale-110 transition-transform">
+                {sample.icon}
+              </span>
+              <div>
+                <p className="text-sm font-medium" style={{ color: "#f0e9d9" }}>
+                  {sample.label}
+                </p>
+                <p
+                  className="text-xs"
+                  style={{ color: isTest ? "#ef4444" : "#9b96b0" }}
+                >
+                  Expected: {sample.type}
+                </p>
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       <button
@@ -84,7 +100,8 @@ export function SampleDocuments({ onClassify, loading }: Props) {
           boxShadow: loading ? "none" : "0 0 20px rgba(255, 140, 42, 0.3)",
         }}
         onMouseEnter={(e) => {
-          if (!loading) e.currentTarget.style.boxShadow = "0 0 30px rgba(255, 140, 42, 0.5)";
+          if (!loading)
+            e.currentTarget.style.boxShadow = "0 0 30px rgba(255, 140, 42, 0.5)";
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.boxShadow = "0 0 20px rgba(255, 140, 42, 0.3)";
